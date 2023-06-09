@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "AtCoder to Notion",
+  "version": "1.0",
+  "host_permissions": ["https://script.google.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://atcoder.jp/contests/*/tasks/*"],
+      "js": ["loader.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["content_scripts/content.js"],
+      "matches": ["https://atcoder.jp/*"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {}
+}
