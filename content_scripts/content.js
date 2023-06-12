@@ -39,12 +39,14 @@ const getSection = (elements) => {
         }
       }
     } else if (elem.nodeName === "OL") {
-      //sectionText.push(...[getNumberedListItem(elem)]);
       for (let li of elem.childNodes) {
         if (li.nodeName === "LI") {
           sectionText.push(getNumberedListItem(li));
         }
       }
+    } else if (elem.nodeName === "DIV") {
+      // 画像の場合（DIV）で良いかどうかは要検討
+      sectionText.push(getImage(elem));
     } else if (elem.nodeName === "P") {
       sectionText.push(getParagraph(elem));
     } else if (elem.nodeName === "H3") {
@@ -54,6 +56,7 @@ const getSection = (elements) => {
   return sectionText;
 };
 
+// 見出しの要素を取得
 const getHeadline = (headlineText) => {
   return {
     type: "heading_2",
@@ -70,6 +73,7 @@ const getHeadline = (headlineText) => {
   };
 };
 
+// 段落の要素を取得
 const getParagraph = (elements) => {
   return {
     type: "paragraph",
@@ -80,6 +84,7 @@ const getParagraph = (elements) => {
   };
 };
 
+// 箇条書きの要素を取得
 const getNumberedListItem = (elements) => {
   const blockItems = getBlocks(elements);
   return {
@@ -91,6 +96,7 @@ const getNumberedListItem = (elements) => {
   };
 };
 
+// 数字箇条書きの要素を取得
 const getBulletedListItem = (elements) => {
   const blockItems = getBlocks(elements);
   return {
@@ -102,10 +108,10 @@ const getBulletedListItem = (elements) => {
   };
 };
 
-const getRichText = (elements, f = false) => {
+// リッチテキストの要素を取得
+const getRichText = (elements) => {
   let richTextList = [];
   for (let elem of elements.childNodes) {
-    if (f) console.log(elem, elem.nodeName);
     if (elem.nodeName === "P") {
       const richText = getRichText(elem);
       for (let r of richText) {
@@ -140,6 +146,7 @@ const getRichText = (elements, f = false) => {
   return richTextList;
 };
 
+// ブロックの要素を取得
 const getBlocks = (elements) => {
   let blockItems = [];
   for (let elem of elements.childNodes) {
@@ -158,4 +165,18 @@ const getBlocks = (elements) => {
     }
   }
   return blockItems;
+};
+
+// 画像の要素を取得
+const getImage = (elements) => {
+  const image_src = elements.querySelector("img").src;
+  return {
+    type: "image",
+    image: {
+      type: "external",
+      external: {
+        url: image_src,
+      },
+    },
+  };
 };
