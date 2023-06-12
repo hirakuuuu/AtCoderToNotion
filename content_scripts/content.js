@@ -31,7 +31,7 @@ const math_selector = 'annotation[encoding="application/x-tex"]';
 const getSection = (elements) => {
   let sectionText = [];
   for (let elem of elements.childNodes) {
-    console.log(elem, elem.nodeName);
+    // console.log(elem, elem.nodeName);
     if (elem.nodeName === "UL") {
       for (let li of elem.childNodes) {
         if (li.nodeName === "LI") {
@@ -47,6 +47,9 @@ const getSection = (elements) => {
     } else if (elem.nodeName === "DIV") {
       // 画像の場合（DIV）で良いかどうかは要検討
       sectionText.push(getImage(elem));
+    } else if (elem.nodeName === "DETAILS") {
+      // 折りたたみ
+      sectionText.push(getDetails(elem));
     } else if (elem.nodeName === "P") {
       sectionText.push(getParagraph(elem));
     } else if (elem.nodeName === "H3") {
@@ -141,6 +144,16 @@ const getRichText = (elements) => {
           code: true,
         },
       });
+    } else if (elem.nodeName == "STRONG") {
+      richTextList.push({
+        type: "text",
+        text: {
+          content: elem.textContent,
+        },
+        annotations: {
+          bold: true,
+        },
+      });
     }
   }
   return richTextList;
@@ -177,6 +190,29 @@ const getImage = (elements) => {
       external: {
         url: image_src,
       },
+    },
+  };
+};
+
+// テキストの要素を取得
+const getText = (text) => {
+  return {
+    type: "text",
+    text: {
+      content: text,
+    },
+  };
+};
+
+// 折りたたみの要素を取得
+const getDetails = (elements) => {
+  const summary_elem = elements.querySelector("summary");
+  console.log(summary_elem);
+  return {
+    type: "toggle",
+    toggle: {
+      rich_text: getRichText(summary_elem),
+      children: getSection(elements),
     },
   };
 };
