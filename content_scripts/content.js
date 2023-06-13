@@ -53,6 +53,9 @@ const getSection = (elements) => {
     } else if (elem.nodeName === "PRE") {
       // コードブロック
       sectionText.push(getCode(elem));
+    } else if (elem.nodeName === "BLOCKQUOTE") {
+      // 引用
+      sectionText.push(getQuote(elem));
     } else if (elem.nodeName === "P") {
       sectionText.push(getParagraph(elem));
     } else if (elem.nodeName === "H3") {
@@ -178,6 +181,9 @@ const getBlocks = (elements) => {
           blockItems.push(getNumberedListItem(li));
         }
       }
+    } else if (elem.nodeName === "BLOCKQUOTE") {
+      // 引用
+      blockItems.push(getQuote(elem));
     }
   }
   return blockItems;
@@ -230,6 +236,17 @@ const getCode = (elements) => {
         emoji: "📎",
       },
       color: "gray_background",
+    },
+  };
+};
+
+// 引用の要素を取
+const getQuote = (elements) => {
+  return {
+    type: "quote",
+    quote: {
+      rich_text: getRichText(elements),
+      color: "default",
     },
   };
 };
