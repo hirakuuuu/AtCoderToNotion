@@ -50,6 +50,9 @@ const getSection = (elements) => {
     } else if (elem.nodeName === "DETAILS") {
       // 折りたたみ
       sectionText.push(getDetails(elem));
+    } else if (elem.nodeName === "PRE") {
+      // コードブロック
+      sectionText.push(getCode(elem));
     } else if (elem.nodeName === "P") {
       sectionText.push(getParagraph(elem));
     } else if (elem.nodeName === "H3") {
@@ -213,6 +216,20 @@ const getDetails = (elements) => {
     toggle: {
       rich_text: getRichText(summary_elem),
       children: getSection(elements),
+    },
+  };
+};
+
+// コードブロックの要素を取得
+const getCode = (elements) => {
+  return {
+    type: "callout",
+    callout: {
+      rich_text: getRichText(elements),
+      icon: {
+        emoji: "📎",
+      },
+      color: "gray_background",
     },
   };
 };
