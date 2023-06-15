@@ -1,28 +1,32 @@
 // メッセージを検知したら、background.jsにメッセージを送る
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("content.js開始");
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  if (message.type === "sendMessage") {
+    console.log("content.js開始");
 
-  // 問題文と制約の要素を取得
-  const Elements = document.getElementsByTagName("section");
-  const problemElement = Elements[0];
-  const constraintElement = Elements[1];
+    // URLをいじる
+    const problem_id = location.pathname.split("/")[4];
+    const contest_id = location.pathname.split("/")[2];
 
-  const problemParagraph = getSection(problemElement);
-  const constraintParagraph = getSection(constraintElement);
+    // 問題文と制約の要素を取得
+    const Elements = document.getElementsByTagName("section");
+    const problemElement = Elements[0];
+    const constraintElement = Elements[1];
+    const problemParagraph = getSection(problemElement);
+    const constraintParagraph = getSection(constraintElement);
 
-  chrome.runtime
-    .sendMessage({
+    // バックグラウンドの実行
+    chrome.runtime.sendMessage({
       title: document.title,
+      url: document.URL,
+      problem_id: problem_id,
+      contest_id: contest_id,
       problem: problemParagraph,
       constraint: constraintParagraph,
-    })
-    .then((response) => {
-      console.log(`backgroundからの戻り値: ${JSON.stringify(response)}`);
-      // ここで画面への処理を書く
-      // const new_element = document.createElement("p");
-      // new_element.textContent = response.text;
-      // document.getElementsByTagName("div")[0].appendChild(new_element);
     });
+  } else if (message.type === "sendResponse") {
+    // コールバック
+    console.log("コールバック");
+  }
 });
 
 // mathjaxのセレクタ
