@@ -1,4 +1,5 @@
 import { GAS_URL, NOTION_API_TOKEN, NOTION_DATABASE_ID } from "./common/env.js";
+import { createProblemPage } from "./common/notion.js";
 
 // 拡張のボタンを押したときに実行される処理
 chrome.action.onClicked.addListener(function (tab) {
@@ -25,15 +26,22 @@ chrome.runtime.onMessage.addListener(async function (
 
   // ページのデータ
   const data = {
-    title: request.title,
-    property: property,
-    content: [...request.problem, ...request.constraint],
+    api_token: NOTION_API_TOKEN,
+    database_id: NOTION_DATABASE_ID,
+    content: {
+      title: request.title,
+      property: property,
+      content: [...request.problem, ...request.constraint],
+    },
   };
 
   // Notionに送信
-  await sendNotion(data);
+  const result = await createProblemPage(data);
   // コールバック
-  chrome.tabs.sendMessage(sender.tab.id, { type: "sendResponse" });
+  chrome.tabs.sendMessage(sender.tab.id, {
+    type: "sendResponse",
+    response: result,
+  });
 });
 
 // difficultyを取得する
@@ -107,29 +115,4 @@ const getProperty = (title, contest_id, difficulty, url) => {
       url: url,
     },
   };
-};
-
-// Notionのデータベースに追加する
-const sendNotion = async (data) => {
-  await fetch(GAS_URL, {
-    // 送信先URL
-    method: "post", // 通信メソッド
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded", // JSON形式のデータのヘッダー
-    },
-    body: JSON.stringify({
-      api_token: NOTION_API_TOKEN,
-      database_id: NOTION_DATABASE_ID,
-      content: data, // JSON形式のデータ
-    }),
-  })
-    .then((response) => {
-      return response.text();
-    })
-    .then((json) => {
-      console.log(json);
-    })
-    .catch((error) => {
-      console.log("エラー:", error);
-    });
 };

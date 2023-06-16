@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     });
   } else if (message.type === "sendResponse") {
     // コールバック
-    console.log("コールバック");
+    console.log(message.response);
   }
 });
 
