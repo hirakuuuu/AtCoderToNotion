@@ -1,5 +1,4 @@
-import { GAS_URL, NOTION_API_TOKEN, NOTION_DATABASE_ID } from "./common/env.js";
-import { createProblemPage } from "./common/notion.js";
+import { createProblemPage } from "./common/api/notion.js";
 
 // 拡張のボタンを押したときに実行される処理
 chrome.action.onClicked.addListener(function (tab) {
@@ -26,13 +25,9 @@ chrome.runtime.onMessage.addListener(async function (
 
   // ページのデータ
   const data = {
-    api_token: NOTION_API_TOKEN,
-    database_id: NOTION_DATABASE_ID,
-    content: {
-      title: request.title,
-      property: property,
-      content: [...request.problem, ...request.constraint],
-    },
+    title: request.title,
+    property: property,
+    content: [...request.problem, ...request.constraint],
   };
 
   // Notionに送信
