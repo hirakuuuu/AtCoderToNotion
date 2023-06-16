@@ -13,6 +13,7 @@ chrome.runtime.onMessage.addListener(async function (
 ) {
   // difficultyを取得
   const difficulty = await getDifficulty(request.problem_id);
+  console.log(difficulty);
 
   // ページのプロパティ
   const property = getProperty(
@@ -88,34 +89,22 @@ const getProperty = (title, contest_id, difficulty, url) => {
         },
       ],
     },
-    Tag: {
+    Contest: {
       multi_select: [
         {
           name: contest_id,
         },
+      ],
+    },
+    Diff: {
+      multi_select: [
         {
           name: getColor(difficulty),
         },
       ],
     },
-    Date: {
-      date: {
-        // 今日の日付を取得(yyyy-mm-dd)
-        start: new Date()
-          .toLocaleDateString("ja-JP", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          })
-          .split("/")
-          .join("-"),
-      },
-    },
     URL: {
       url: url,
-    },
-    AC: {
-      checkbox: false,
     },
   };
 };
