@@ -1,4 +1,4 @@
-import { NOTION_API_TOKEN, NOTION_DATABASE_ID } from "../env.js";
+import { NOTION_API_TOKEN, NOTION_DATABASE_ID } from "./env.js";
 
 // Notionのエンドポイント
 const endPoint = `https://api.notion.com/v1/pages`;
