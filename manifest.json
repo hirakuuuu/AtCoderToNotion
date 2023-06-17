@@ -2,7 +2,10 @@
   "manifest_version": 3,
   "name": "AtCoder to Notion",
   "version": "1.0",
-  "host_permissions": ["https://script.google.com/*"],
+  "host_permissions": [
+    "https://script.google.com/*",
+    "https://api.notion.com/*"
+  ],
   "content_scripts": [
     {
       "matches": ["https://atcoder.jp/contests/*/tasks/*"],
@@ -11,7 +14,10 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["content_scripts/content.js"],
+      "resources": [
+        "content_scripts/content.js",
+        "content_scripts/parser/parser.js"
+      ],
       "matches": ["https://atcoder.jp/*"]
     }
   ],
