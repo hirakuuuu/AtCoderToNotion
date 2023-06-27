@@ -28,7 +28,7 @@
   "permissions": ["storage"],
   "action": {},
   "options_ui": {
-    "page": "html/options.html",
+    "page": "options/html/index.html",
     "open_in_tab": false
   }
 }
