@@ -1,5 +1,3 @@
-import { NOTION_API_TOKEN, NOTION_DATABASE_ID } from "./env.js";
-
 // Notionのエンドポイント
 const endPoint = `https://api.notion.com/v1/pages`;
 
@@ -11,7 +9,11 @@ const headerInfo = (token) => ({
 });
 
 // 実行する関数
-export const createProblemPage = async (data) => {
+export const createProblemPage = async (
+  NOTION_API_TOKEN,
+  NOTION_DATABASE_ID,
+  data
+) => {
   // 結果を格納する変数
   let result = undefined;
 

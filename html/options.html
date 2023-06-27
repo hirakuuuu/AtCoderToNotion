@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <title>AtCoder To Notion</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="mx-4 my-2">
+        <div class="row">Notion API Token</div>
+        <div class="row">
+          <input id="api-key" type="text" class="form-control" />
+        </div>
+        <div class="row">Notion Database ID</div>
+        <div class="row">
+          <input id="database-id" type="text" class="form-control" />
+        </div>
+
+        <div class="row mt-2">Property</div>
+        <div class="row form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="name"
+            checked
+          />
+          <label class="form-check-label" for="name"> Name (Title) </label>
+        </div>
+        <div class="row form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="contest"
+          />
+          <label class="form-check-label" for="contest">
+            Contest (Multi Select)
+          </label>
+        </div>
+        <div class="row form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="difficulty"
+          />
+          <label class="form-check-label" for="difficulty">
+            Diff (Multi Select)
+          </label>
+        </div>
+        <div class="row form-check mb-2">
+          <input class="form-check-input" type="checkbox" value="" id="url" />
+          <label class="form-check-label" for="url"> URL (url) </label>
+        </div>
+
+        <div class="row mb-3">
+          <p id="status">　</p>
+          <button id="save" class="form-control btn-dark">Save</button>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../js/options.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

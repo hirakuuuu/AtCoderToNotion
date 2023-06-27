@@ -11,17 +11,44 @@ chrome.runtime.onMessage.addListener(async function (
   sender,
   callback
 ) {
+  // 保存した情報を取得
+  let NOTION_API_TOKEN = "",
+    NOTION_DATABASE_ID = "";
+  let name_checked = true,
+    contest_checked = false,
+    difficulty_checked = false,
+    url_checked = false;
+  chrome.storage.local.get(
+    [
+      "ATCODERTONOTION_API_TOKEN",
+      "ATCODERTONOTION_DATABASE_ID",
+      "ATCODERTONOTION_NAME_CHEKED",
+      "ATCODERTONOTION_CONTEST_CHEKED",
+      "ATCODERTONOTION_DIFFICULTY_CHEKED",
+      "ATCODERTONOTION_URL_CHEKED",
+    ],
+    function (items) {
+      NOTION_API_TOKEN = items.ATCODERTONOTION_API_TOKEN;
+      NOTION_DATABASE_ID = items.ATCODERTONOTION_DATABASE_ID;
+      name_checked = items.ATCODERTONOTION_NAME_CHEKED;
+      contest_checked = items.ATCODERTONOTION_CONTEST_CHEKED;
+      difficulty_checked = items.ATCODERTONOTION_DIFFICULTY_CHEKED;
+      url_checked = items.ATCODERTONOTION_URL_CHEKED;
+    }
+  );
+
   // difficultyを取得
   const difficulty = await getDifficulty(request.problem_id);
-  console.log(difficulty);
 
   // ページのプロパティ
-  const property = getProperty(
-    request.title,
-    request.contest_id,
-    difficulty,
-    request.url
-  );
+  console.log(name_checked, contest_checked, difficulty_checked, url_checked);
+  let property = {};
+  if (name_checked) property.Name = getTitleProperty(request.title);
+  if (contest_checked)
+    property.Contest = getMultiSelectProperty(request.contest_id);
+  if (difficulty_checked)
+    property.Diff = getMultiSelectProperty(getColor(difficulty));
+  if (url_checked) property.URL = getUrlProperty(request.url);
 
   // ページのデータ
   const data = {
@@ -31,7 +58,11 @@ chrome.runtime.onMessage.addListener(async function (
   };
 
   // Notionに送信
-  const result = await createProblemPage(data);
+  const result = await createProblemPage(
+    NOTION_API_TOKEN,
+    NOTION_DATABASE_ID,
+    data
+  );
   // コールバック
   chrome.tabs.sendMessage(sender.tab.id, {
     type: "sendResponse",
@@ -47,7 +78,6 @@ const getDifficulty = async (problem_id) => {
       return response.json();
     })
     .then((json) => {
-      console.log(json);
       difficulty = json[problem_id].difficulty;
     })
     .catch((error) => {
@@ -80,34 +110,30 @@ const getColor = (difficulty) => {
   }
 };
 
-// プロパティ生成
-const getProperty = (title, contest_id, difficulty, url) => {
+const getTitleProperty = (title) => {
   return {
-    Name: {
-      title: [
-        {
-          text: {
-            content: title,
-          },
+    title: [
+      {
+        text: {
+          content: title,
         },
-      ],
-    },
-    Contest: {
-      multi_select: [
-        {
-          name: contest_id,
-        },
-      ],
-    },
-    Diff: {
-      multi_select: [
-        {
-          name: getColor(difficulty),
-        },
-      ],
-    },
-    URL: {
-      url: url,
-    },
+      },
+    ],
+  };
+};
+
+const getMultiSelectProperty = (name) => {
+  return {
+    multi_select: [
+      {
+        name: name,
+      },
+    ],
+  };
+};
+
+const getUrlProperty = (url) => {
+  return {
+    url: url,
   };
 };

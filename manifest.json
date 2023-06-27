@@ -25,5 +25,10 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "action": {}
+  "permissions": ["storage"],
+  "action": {},
+  "options_ui": {
+    "page": "html/options.html",
+    "open_in_tab": false
+  }
 }
