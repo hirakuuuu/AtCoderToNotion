@@ -1,5 +1,7 @@
 # AtCoderToNotion
 AtCoderの問題ページからNotionのページを生成するChrome拡張
+↓以下のページからインストールできます
+https://chrome.google.com/webstore/detail/atcoder-to-notion/mhoemoadpammfnlbjagngjenedfpcfgi?hl=ja&authuser=0
 
 # デモ
 
@@ -23,23 +25,16 @@ https://github.com/hirakuuuu/AtCoderToNotion/assets/83483542/55d894d2-a560-48d5-
      - Contest (multi_select) 
      - Diff (multi_select) 
      - URL (url)
-   
-   - 変更したい場合は、`background.js` 内の`getProperty` 関数を修正してください
-  
+   - 必要でないプロパティは作らないように設定できるので、無くても大丈夫です。
    - また、共有用のURLからデータベースのIDを控えておいてください
    
-3. Integrationとデータベースの紐づけ
+4. Integrationとデータベースの紐づけ
    - データベースを置いているページに先ほど作成したインテグレーションを追加してください
 
 ## 拡張機能の導入
-1. 環境変数を設定
-    - `common/env.js` ファイルを作成し、`NOTION_API_TOKEN`と`NOTION_DATABASE_ID` を指定してください
-      
-    - `common/env_sample.js` と同様の形式にしてください
 
-2. chromeに導入
-    - chrome://extensions/ の `パッケージ化されていない拡張機能を読み込む` からこの拡張機能を選択してください 
-
-
-# 今後の展望
-ユーザースクリプトで公開したい
+1. chromeに導入
+    - [このリンク](https://chrome.google.com/webstore/detail/atcoder-to-notion/mhoemoadpammfnlbjagngjenedfpcfgi?hl=ja&authuser=0) から本拡張機能をインストールして下さい
+2. 拡張機能の設定
+    - 拡張機能のオプションから事前に控えておいた `Notion API Token` と `Notion Database ID` 登録します
+    - 登録したいプロパティも選択してください
