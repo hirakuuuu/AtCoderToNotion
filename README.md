@@ -38,3 +38,8 @@ https://github.com/hirakuuuu/AtCoderToNotion/assets/83483542/55d894d2-a560-48d5-
 2. 拡張機能の設定
     - 拡張機能のオプションから事前に控えておいた `Notion API Token` と `Notion Database ID` 登録します
     - 登録したいプロパティも選択してください
+  
+
+# 使用上の注意
+- データベースのカラム名等が異なるとページが生成されません
+- developper tool の console からレスポンスのオブジェクトを確認できます
