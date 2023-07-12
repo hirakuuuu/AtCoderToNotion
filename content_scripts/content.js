@@ -30,8 +30,10 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     console.log(message.response);
     if (message.response.object === "page") {
       console.log("ページが生成されました！");
+      alert("ページが生成されました！");
     } else if (message.response.object === "error") {
       console.log("エラーが発生しました！");
+      alert("エラーが発生しました！");
     }
   }
 });
