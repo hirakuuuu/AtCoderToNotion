@@ -123,15 +123,10 @@ const getRichText = (elements) => {
         },
       });
     } else if (elem.nodeName == "STRONG") {
-      richTextList.push({
-        type: "text",
-        text: {
-          content: elem.textContent,
-        },
-        annotations: {
-          bold: true,
-        },
-      });
+      const richText = getBoldRichText(elem);
+      for (let r of richText) {
+        richTextList.push(r);
+      }
     }
   }
   return richTextList;
@@ -221,3 +216,43 @@ const getQuote = (elements) => {
     },
   };
 };
+
+// 太字の要素を取得
+const getBoldRichText = (elements) => {
+  let richTextList = [];
+  for (let elem of elements.childNodes) {
+    if (elem.nodeName === "VAR") {
+      richTextList.push({
+        type: "equation",
+        equation: {
+          expression: elem.querySelector(math_selector).textContent,
+        },
+        annotations: {
+          bold: true,
+        },
+      });
+    } else if (elem.nodeName == "#text") {
+      richTextList.push({
+        type: "text",
+        text: {
+          content: elem.nodeValue.replace(/[\x00-\x1F\x7F-\x9F]/g, ""),
+        },
+        annotations: {
+          bold: true,
+        },
+      });
+    } else if (elem.nodeName == "CODE") {
+      richTextList.push({
+        type: "text",
+        text: {
+          content: elem.textContent,
+        },
+        annotations: {
+          code: true,
+          bold: true,
+        },
+      });
+    }
+  }
+  return richTextList;
+}
