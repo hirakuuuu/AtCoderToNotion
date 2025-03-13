@@ -30,6 +30,7 @@ https://github.com/hirakuuuu/AtCoderToNotion/assets/83483542/55d894d2-a560-48d5-
    
 4. Integrationとデータベースの紐づけ
    - データベースを置いているページに先ほど作成したインテグレーションを追加してください
+   - [インテグレーションの追加と管理 – Notion (ノーション)ヘルプセンター](https://www.notion.com/ja/help/add-and-manage-connections-with-the-api)
 
 ## 拡張機能の導入
 
