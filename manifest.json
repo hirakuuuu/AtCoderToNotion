@@ -4,7 +4,8 @@
   "version": "1.0.3",
   "host_permissions": [
     "https://script.google.com/*",
-    "https://api.notion.com/*"
+    "https://api.notion.com/*",
+	"https://kenkoooo.com/*"
   ],
   "content_scripts": [
     {
