@@ -1,4 +1,4 @@
-import { createProblemPage } from "./common/api/notion.js";
+import { createProblemPage, findProblemPage } from "./common/api/notion.js";
 
 // 拡張のボタンを押したときに実行される処理
 chrome.action.onClicked.addListener(function (tab) {
@@ -18,7 +18,7 @@ chrome.runtime.onMessage.addListener(async function (
     contest_checked = false,
     difficulty_checked = false,
     url_checked = false;
-  chrome.storage.local.get(
+  await new Promise((resolve) => chrome.storage.local.get(
     [
       "ATCODERTONOTION_API_TOKEN",
       "ATCODERTONOTION_DATABASE_ID",
@@ -34,8 +34,33 @@ chrome.runtime.onMessage.addListener(async function (
       contest_checked = items.ATCODERTONOTION_CONTEST_CHEKED;
       difficulty_checked = items.ATCODERTONOTION_DIFFICULTY_CHEKED;
       url_checked = items.ATCODERTONOTION_URL_CHEKED;
+      resolve();
     }
-  );
+  ));
+
+  if (url_checked) {
+    try {
+      const existingPage = await findProblemPage(
+        NOTION_API_TOKEN,
+        NOTION_DATABASE_ID,
+        request.url
+      );
+      if (existingPage) {
+        chrome.tabs.sendMessage(sender.tab.id, {
+          type: "sendResponse",
+          response: existingPage,
+          existing: true,
+        });
+        return;
+      }
+    } catch (error) {
+      chrome.tabs.sendMessage(sender.tab.id, {
+        type: "sendResponse",
+        response: { object: "error", message: error.message },
+      });
+      return;
+    }
+  }
 
   // difficultyを取得
   const difficulty = await getDifficulty(request.problem_id);
