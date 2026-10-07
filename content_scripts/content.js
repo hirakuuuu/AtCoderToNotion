@@ -28,13 +28,17 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   } else if (message.type === "sendResponse") {
     // コールバック
     console.log(message.response);
-    if (message.response.object === "page") {
+    if (message.response?.object === "page") {
+      if (message.existing) {
+        open(message.response.url);
+        return;
+      }
       console.log("ページが生成されました！");
       alert("ページが生成されました！");
       open(message.response.url);
-    } else if (message.response.object === "error") {
+    } else {
       console.log("エラーが発生しました！");
-      alert("エラーが発生しました！");
+      alert(message.response?.message || "エラーが発生しました！");
     }
   }
 });
